@@ -1,8 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function SingleCoinList({ currency, index }) {
+  const navigate = useNavigate();
   return (
-    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <tr
+      onClick={navigate(`/currency/${currency.id}`)}
+      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+    >
       <th
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -18,21 +23,17 @@ function SingleCoinList({ currency, index }) {
           />
         </div>
         {currency.name}
-        <div className="px-1">
-        {currency.symbol}
-        </div>
+        <div className="px-1">{currency.symbol}</div>
       </td>
       <td className="px-6 py-4">${currency.current_price}</td>
       <td className="px-6 py-4 text-red-600">
         <i className="fas fa-fw fa-caret-down"></i>
         {currency.price_change_percentage_24h}%
-        </td>
+      </td>
       <td className="px-6 py-4 text-green-500">{currency.high_24h}</td>
       <td className="px-6 py-4 text-green-500">{currency.low_24h}</td>
       <td className="px-6 py-4">${currency.total_volume}</td>
       <td className="px-6 py-4">${currency.market_cap}</td>
-      
-
     </tr>
   );
 }

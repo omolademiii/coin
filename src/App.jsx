@@ -10,7 +10,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route index element={<CoinProperties />} />
-        <Route path="/currency/:currencyid" element={<CurrencyDetails />} />
+        <Route path="/currency/:currencyId" element={<CurrencyDetails />} />
       </Routes>
     </Router>
     );
