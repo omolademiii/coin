@@ -5,8 +5,8 @@ function SingleCoinList({ currency, index }) {
   const navigate = useNavigate();
   return (
     <tr
-      onClick={navigate(`/currency/${currency.id}`)}
-      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      onClick={() => navigate(`/currency/${currency.id}`)}
+      className="bg-white hover:bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700"
     >
       <th
         scope="row"
@@ -25,15 +25,15 @@ function SingleCoinList({ currency, index }) {
         {currency.name}
         <div className="px-1">{currency.symbol}</div>
       </td>
-      <td className="px-6 py-4">${currency.current_price}</td>
+      <td className="px-6 py-4">${currency.current_price.toLocaleString()}</td>
       <td className="px-6 py-4 text-red-600">
         <i className="fas fa-fw fa-caret-down"></i>
         {currency.price_change_percentage_24h}%
       </td>
-      <td className="px-6 py-4 text-green-500">{currency.high_24h}</td>
-      <td className="px-6 py-4 text-green-500">{currency.low_24h}</td>
-      <td className="px-6 py-4">${currency.total_volume}</td>
-      <td className="px-6 py-4">${currency.market_cap}</td>
+      <td className="px-6 py-4 text-green-500">{currency.high_24h}%</td>
+      <td className="px-6 py-4 text-green-500">{currency.low_24h}%</td>
+      <td className="px-6 py-4">${currency.total_volume.toLocaleString()}</td>
+      <td className="px-6 py-4">${currency.market_cap.toLocaleString()}</td>
     </tr>
   );
 }
