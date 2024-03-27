@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SingleCoinList from "./SingleCoinList";
+import { useNavigate } from "react-router-dom";
 
 const CoinProperties = () => {
   const [currencies, setCurrencies] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
+  const [searchResult, setSearchResult] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const pageSize = 50;
 
   useEffect(() => {
@@ -14,7 +17,6 @@ const CoinProperties = () => {
         const response = await axios.get(
           `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${pageSize}&page=${pageNumber}&sparkline=false&locale=en`
         );
-        console.log(response.data);
         setCurrencies(response.data);
       } catch (error) {
         console.error("Error fetching currencies:", error);
@@ -30,8 +32,8 @@ const CoinProperties = () => {
         const response = await axios.get(
           `https://api.coingecko.com/api/v3/search?query=${searchQuery}`
         );
-        console.log(response.data);
-        setCurrencies(response.data);
+        setSearchResult(response.data.coins);
+        setShowSearchResults(true); 
       } catch (error) {
         console.error("Error fetching currencies:", error);
       }
@@ -40,9 +42,11 @@ const CoinProperties = () => {
     if (searchQuery !== "") {
       searchCurrencies();
     } else {
-      setCurrencies(null);
+      setSearchResult([]);
+      setShowSearchResults(false); 
     }
   }, [searchQuery]);
+
 
   const handleNextPage = () => {
     setPageNumber(pageNumber + 1);
@@ -61,10 +65,7 @@ const CoinProperties = () => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <form className="mt-4 mb-8 sm:mt-8">
-        <label
-          htmlFor="default-search"
-          className="sr-only"
-        >
+        <label htmlFor="default-search" className="sr-only">
           Search
         </label>
         <input
@@ -76,6 +77,31 @@ const CoinProperties = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </form>
+
+      
+      {showSearchResults && (
+  <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="flex justify-center"> 
+      <div className="bg-white border-b p-8 rounded-lg shadow-lg" style={{ width: '200px', maxHeight: "400px", overflowY: "auto" }}> 
+        <h2 className="text-xl font-bold mb-4">Search Results</h2>
+        {searchResult.map((result) => (
+          <a
+            key={result.id}
+            href={`/currency/${result.id}`}
+            className="flex items-center mb-4 hover:bg-gray-100 rounded-lg p-2"
+          >
+            <img src={result.thumb} alt="" className="mr-2" /> 
+            <span>{result.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">

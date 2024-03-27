@@ -5,6 +5,7 @@ function SingleCoinList({ currency, index }) {
   const navigate = useNavigate();
   return (
     <tr
+    key={currency.id}
       onClick={() => navigate(`/currency/${currency.id}`)}
       className="bg-white hover:bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700"
     >
