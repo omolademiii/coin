@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SingleCoinList from "./SingleCoinList";
-import { useNavigate } from "react-router-dom";
 
 const CoinProperties = () => {
   const [currencies, setCurrencies] = useState(null);
