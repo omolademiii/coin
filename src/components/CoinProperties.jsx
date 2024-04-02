@@ -32,7 +32,7 @@ const CoinProperties = () => {
           `https://api.coingecko.com/api/v3/search?query=${searchQuery}`
         );
         setSearchResult(response.data.coins);
-        setShowSearchResults(true); 
+        setShowSearchResults(true);
       } catch (error) {
         console.error("Error fetching currencies:", error);
       }
@@ -42,10 +42,9 @@ const CoinProperties = () => {
       searchCurrencies();
     } else {
       setSearchResult([]);
-      setShowSearchResults(false); 
+      setShowSearchResults(false);
     }
   }, [searchQuery]);
-
 
   const handleNextPage = () => {
     setPageNumber(pageNumber + 1);
@@ -77,89 +76,88 @@ const CoinProperties = () => {
         />
       </form>
 
-      
-      {showSearchResults && (
-  <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="flex justify-center"> 
-      <div className="bg-white border-b p-8 rounded-lg shadow-lg" style={{ width: '200px', maxHeight: "400px", overflowY: "auto" }}> 
-        <h2 className="text-xl font-bold mb-4">Search Results</h2>
-        {searchResult.map((result) => (
-          <a
-            key={result.id}
-            href={`/currency/${result.id}`}
-            className="flex items-center mb-4 hover:bg-gray-100 rounded-lg p-2"
-          >
-            <img src={result.thumb} alt="" className="mr-2" /> 
-            <span>{result.name}</span>
-          </a>
-        ))}
+      <div className={showSearchResults ? "block" : "hidden"}>
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="flex justify-center">
+            <div
+              className="bg-white border-b p-8 rounded-lg shadow-lg"
+              style={{ width: "250px", maxHeight: "400px", overflowY: "auto" }}
+            >
+              <h2 className="text-xl font-bold mb-4">Search Results</h2>
+              {searchResult.map((result) => (
+                <a
+                  key={result.id}
+                  href={`/currency/${result.id}`}
+                  className="flex items-center mb-4 hover:bg-gray-100 rounded-lg p-2"
+                >
+                  <img src={result.thumb} alt="" className="mr-2" />
+                  <span>{result.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-)}
-
-
-
-
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs uppercase bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                ID
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Coin
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Price
-              </th>
-              <th scope="col" className="px-6 py-3">
-                24h
-              </th>
-              <th scope="col" className="px-6 py-3">
-                High 24h
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Low 24h
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Total volume
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Market cap
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {!currencies
-              ? "Loading currencies"
-              : filteredCurrencies.map((currency, index) => (
-                  <SingleCoinList
-                    key={currency.id}
-                    currency={currency}
-                    index={index + 1}
-                  />
-                ))}
-          </tbody>
-        </table>
-        <div className="flex justify-center mt-4">
-          <button
-            className="px-4 py-2 mx-2 bg-blue-500 text-white rounded-md"
-            onClick={handlePrevPage}
-            disabled={pageNumber === 1}
-          >
-            Previous Page
-          </button>
-          <button
-            className="px-4 py-2 mx-2 bg-blue-500 text-white rounded-md"
-            onClick={handleNextPage}
-            disabled={filteredCurrencies.length < pageSize}
-          >
-            Next Page
-          </button>
-        </div>
+        {filteredCurrencies.length > 0 && (
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-xs uppercase bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  ID
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Coin
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Price
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  24h
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  High 24h
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Low 24h
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total volume
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Market cap
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredCurrencies.map((currency, index) => (
+                <SingleCoinList
+                  key={currency.id}
+                  currency={currency}
+                  index={index + 1}
+                />
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className="flex justify-center mt-4">
+        <button
+          className="px-4 py-2 mx-2 bg-blue-500 text-white rounded-md"
+          onClick={handlePrevPage}
+          disabled={pageNumber === 1}
+        >
+          Previous Page
+        </button>
+        <button
+          className="px-4 py-2 mx-2 bg-blue-500 text-white rounded-md"
+          onClick={handleNextPage}
+          disabled={filteredCurrencies.length < pageSize}
+        >
+          Next Page
+        </button>
       </div>
     </div>
   );
